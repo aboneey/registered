@@ -35,7 +35,6 @@ public class USTARegPlayerFinder {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless");
         chromeOptions.addArguments("--no-sandbox");
-
         
         TournamentService trns = new TournamentService();
 
@@ -45,8 +44,10 @@ public class USTARegPlayerFinder {
             System.out.println("Tournament name "+trn.getName());
             List<String> players = new ArrayList<String>();
 
-            WebDriver driver = new ChromeDriver();
-
+            
+            //WebDriver driver = new ChromeDriver();
+            WebDriver driver = new ChromeDriver(chromeOptions);
+            
             // Navigate to URL
             driver.get(trn.getUrl());
 
