@@ -12,6 +12,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.usta.model.Tournament;
@@ -28,8 +29,14 @@ public class USTARegPlayerFinder {
      * @param args
      */
     public static void main(String[] args) {
-        System.setProperty("webdriver.chrome.driver", "E:\\chromed\\chromedriver.exe");
+        //System.setProperty("webdriver.chrome.driver", "E:\\chromed\\chromedriver.exe");
 
+        System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--headless");
+        chromeOptions.addArguments("--no-sandbox");
+
+        
         TournamentService trns = new TournamentService();
 
         List<Tournament> tournaments = trns.getTournaments();
