@@ -4,6 +4,7 @@
   <artifactId>registered</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>Tournament registered players</name>
+  
   <description>Find players registered for a tournament</description>
     <dependencies>
 	<dependency>
@@ -26,6 +27,35 @@
        <artifactId>mysql-connector-java</artifactId>
        <version>8.0.13</version>
     </dependency>
+	<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
+	<dependency>
+	    <groupId>org.springframework.data</groupId>
+	    <artifactId>spring-data-jpa</artifactId>
+	    <version>2.1.8.RELEASE</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-jdbc</artifactId>
+	    <version>5.1.7.RELEASE</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.sun.mail</groupId>
+	    <artifactId>javax.mail</artifactId>
+	    <version>1.6.1</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.codehaus.jettison/jettison -->
+	<dependency>
+	    <groupId>org.codehaus.jettison</groupId>
+	    <artifactId>jettison</artifactId>
+	    <version>1.4.0</version>
+	</dependency>
+	<!-- slf4j-log4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.1</version>
+		</dependency>
   </dependencies>
   	<build>
 		<plugins>
