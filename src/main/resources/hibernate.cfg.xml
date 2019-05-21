@@ -27,5 +27,7 @@
         <property name="hibernate.dbcp.maxWaitMillis">-1</property>
         <mapping class="com.usta.model.RegisteredPlayer" />
         <mapping class="com.usta.model.Tournament" />
+        <mapping class="com.usta.model.RankGenDetails" />
+        <mapping class="com.usta.model.PlayerRank" />
     </session-factory>
 </hibernate-configuration>

@@ -6,6 +6,8 @@ package com.usta;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -14,8 +16,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.usta.model.Tournament;
+import com.usta.service.MailService;
 import com.usta.service.RegPlayerService;
 import com.usta.service.TournamentService;
 
@@ -23,14 +31,20 @@ import com.usta.service.TournamentService;
  * @author anil.bonigala
  *
  */
+@ComponentScan(basePackages = "com.usta")
 public class USTARegPlayerFinder {
 
-    /**
+
+	
+	/**
      * @param args
      */
     public static void main(String[] args) {
-        //System.setProperty("webdriver.chrome.driver", "E:\\chromed\\chromedriver.exe");
+    	
+    	// Linux options
+    	System.setProperty("webdriver.chrome.driver", "E:\\chromed\\chromedriver.exe");
 
+        //Linux options
         System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless");
@@ -44,8 +58,9 @@ public class USTARegPlayerFinder {
             System.out.println("Tournament name "+trn.getName());
             List<String> players = new ArrayList<String>();
 
-            
+            // Windows option
             //WebDriver driver = new ChromeDriver();
+            // Linux option
             WebDriver driver = new ChromeDriver(chromeOptions);
             
             // Navigate to URL
@@ -115,10 +130,82 @@ public class USTARegPlayerFinder {
                 driver.quit();
 
                 RegPlayerService regPlayerService = new RegPlayerService();
-                regPlayerService.saveRegisteredPlayers(trn.getName(), players);
-
+                boolean newPlayerRegistered = regPlayerService.saveRegisteredPlayers(trn.getName(), players);
+                System.out.println("is a new Player registered "+newPlayerRegistered);
+                if (newPlayerRegistered) {
+	                Map<Integer, String> playerRanks =  regPlayerService.getTournamentRanks(players, age);
+	                String message = getPlayerListHtml (playerRanks) ;//playerRankService.getTournamentRanks(trn.getName(), trn.getAge());
+	                
+	                MailService mailService  = new MailService();
+	                mailService.sendMail(trn.getName(), message);
+                }
             }
         }
+    }
+
+    private static String getPlayerListHtml(Map<Integer, String> playerRanks) {
+		
+    	
+    	Integer aRank = new Integer(0);
+        String keyPlayer="Bonigala, Aryan";
+        for(Map.Entry<Integer, String> entry: playerRanks.entrySet()){
+            if(keyPlayer.equalsIgnoreCase(entry.getValue())){
+                aRank = entry.getKey();
+                break; 
+            }
+        }
+    	
+        Map<Integer, String> playerRanksAbove = new TreeMap<Integer, String>();
+        Map<Integer, String> playerRanksBelow = new TreeMap<Integer, String>();
+        
+        for(Map.Entry<Integer, String> entry: playerRanks.entrySet()){
+        	if (entry.getKey() > aRank) {
+        		playerRanksBelow.put(entry.getKey(), entry.getValue());
+        	} else {
+        		playerRanksAbove.put(entry.getKey(), entry.getValue());
+        	}
+        }
+        
+        int totRanksBelow = playerRanksBelow.size();
+        int totRanksAbove = playerRanksAbove.size();
+        
+        
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("<html>");
+    	sb.append("<head>");
+    	sb.append("</head>");
+    	sb.append("<table>");
+    	sb.append("<th colspan=2> Total players above "+ totRanksAbove + "</th>");
+    	sb.append("<tr>");
+    	sb.append("<th> Rank </th>");
+    	sb.append("<th> Player </th>");
+    	sb.append("</tr>");
+    	for (Map.Entry<Integer, String> entry : playerRanksAbove.entrySet()) {
+    	    sb.append("<tr>");
+    	    sb.append("<td> " + entry.getKey() + " </td>");
+    	    sb.append("<td> " + entry.getValue() + " </td>");
+    	    sb.append("</tr>");
+    	}
+    	sb.append("</table>");
+    	sb.append("</Br>");
+    	sb.append("</Br>");
+    	sb.append("<table>");
+    	sb.append("<th colspan=2> Total players below "+ totRanksBelow + "</th>");
+    	sb.append("<tr>");
+    	sb.append("<th> Rank </th>");
+    	sb.append("<th> Player </th>");
+    	sb.append("</tr>");
+    	for (Map.Entry<Integer, String> entry : playerRanksBelow.entrySet()) {
+    	    sb.append("<tr>");
+    	    sb.append("<td> " + entry.getKey() + " </td>");
+    	    sb.append("<td> " + entry.getValue() + " </td>");
+    	    sb.append("</tr>");
+    	}
+    	sb.append("</table>");
+    	
+    	sb.append("</body>");
+    	sb.append("</html>");
+    	return sb.toString();
     }
 
 }

@@ -57,6 +57,9 @@ public class TournamentService {
 
         Transaction transaction = null;
         Date now = new Date();
+        
+        java.sql.Date sqlDate =  new java.sql.Date(now.getTime()); 
+        System.out.println(" Todays date "+sqlDate.toString());
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -65,7 +68,7 @@ public class TournamentService {
             CriteriaQuery<Tournament> query = builder.createQuery(Tournament.class);
             Root<Tournament> root = query.from(Tournament.class);
             query.select(root)
-                    .where(builder.greaterThanOrEqualTo(root.get("regEndDate"), new java.sql.Date(now.getTime())));
+                    .where(builder.greaterThanOrEqualTo (root.get("regEndDate"), new java.sql.Date(now.getTime())));
             Query<Tournament> q = session.createQuery(query);
             List<Tournament> ranks = q.getResultList();
             transaction.commit();
