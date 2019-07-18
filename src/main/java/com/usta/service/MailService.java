@@ -39,7 +39,7 @@ public class MailService {
             //Creating a Message object to set the email content
             MimeMessage msg = new MimeMessage(session);
             //Storing the comma seperated values to email addresses
-            String to = "anil.bonigala@gmail.com,gerasoujanya@gmail.com";
+            String to = "anil.bonigala@gmail.com,gerasoujanya@gmail.com,aryanbonigala@icloud.com";
             /*Parsing the String with defualt delimiter as a comma by marking the boolean as true and storing the email
             addresses in an array of InternetAddress objects*/
             InternetAddress[] address = InternetAddress.parse(to, true);
