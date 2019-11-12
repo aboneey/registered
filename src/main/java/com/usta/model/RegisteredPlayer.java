@@ -34,6 +34,13 @@ public class RegisteredPlayer {
     @Column(name = "reg_date")
     private Date regDate;
 
+    @Column(name = "trn_id")
+    private int trnId;
+    
+    @Column(name = "trn_date")
+    private String trnDate;
+    
+    
     /**
      * @return the id
      */
@@ -93,4 +100,25 @@ public class RegisteredPlayer {
     public void setRegDate(Date regDate) {
         this.regDate = regDate;
     }
+
+	public int getTrnId() {
+		return trnId;
+	}
+
+	public void setTrnId(int trnId) {
+		this.trnId = trnId;
+	}
+
+	public String getTrnDate() {
+		return trnDate;
+	}
+
+	public void setTrnDate(String trnDate) {
+		this.trnDate = trnDate;
+	}
+    
+    
+    
+    
+    
 }

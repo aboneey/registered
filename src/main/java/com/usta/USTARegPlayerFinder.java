@@ -41,11 +41,12 @@ public class USTARegPlayerFinder {
      */
     public static void main(String[] args) {
     	
-    	// Linux options
-    	System.setProperty("webdriver.chrome.driver", "E:\\chromed\\chromedriver.exe");
-
-        //Linux options
-        System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
+    	//windows options
+    	//System.setProperty("webdriver.chrome.driver", "E:\\chromed\\chromedriver.exe");
+    	//System.setProperty("webdriver.chrome.driver","‎⁨/usr/local/bin/chromedriver⁩");
+          
+    	//Linux options
+        //System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless");
         chromeOptions.addArguments("--no-sandbox");
@@ -130,15 +131,19 @@ public class USTARegPlayerFinder {
                 driver.quit();
 
                 RegPlayerService regPlayerService = new RegPlayerService();
-                boolean newPlayerRegistered = regPlayerService.saveRegisteredPlayers(trn.getName(), players);
-                System.out.println("is a new Player registered "+newPlayerRegistered);
+               
+                
+                boolean newPlayerRegistered = regPlayerService.saveRegisteredPlayers(trn.getName(), players,trn.getId());
+                System.out.println("is a new Player registered in Tourn"+ trn.getName()+" = "+newPlayerRegistered);
                 if (newPlayerRegistered) {
 	                Map<Integer, String> playerRanks =  regPlayerService.getTournamentRanks(players, age);
 	                String message = getPlayerListHtml (playerRanks) ;//playerRankService.getTournamentRanks(trn.getName(), trn.getAge());
+	                System.out.println(" Sending email for "+trn.getName());
 	                
 	                MailService mailService  = new MailService();
 	                mailService.sendMail(trn.getName(), message);
                 }
+                
             }
         }
     }

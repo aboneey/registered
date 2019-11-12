@@ -40,6 +40,7 @@ public class MailService {
             MimeMessage msg = new MimeMessage(session);
             //Storing the comma seperated values to email addresses
             String to = "anil.bonigala@gmail.com,gerasoujanya@gmail.com,aryan.bonigala@gmail.com";
+            //String to = "anil.bonigala@gmail.com";
             /*Parsing the String with defualt delimiter as a comma by marking the boolean as true and storing the email
             addresses in an array of InternetAddress objects*/
             InternetAddress[] address = InternetAddress.parse(to, true);

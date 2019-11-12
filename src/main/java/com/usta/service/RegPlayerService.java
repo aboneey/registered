@@ -28,7 +28,7 @@ import com.usta.util.HibernateUtil;
 public class RegPlayerService {
 
 
-	public boolean saveRegisteredPlayers(String trnName, List<String> players) {
+	public boolean saveRegisteredPlayers(String trnName, List<String> players, int trnId) {
 
         // opens a new session from the session factory
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -41,13 +41,15 @@ public class RegPlayerService {
             RegisteredPlayer regPlayer = new RegisteredPlayer();
             regPlayer.setPlayerName(name);
             regPlayer.setTrnName(trnName);
+            regPlayer.setTrnId(trnId);
             regPlayer.setRegDate(date);
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<RegisteredPlayer> query = builder.createQuery(RegisteredPlayer.class);
             Root<RegisteredPlayer> root = query.from(RegisteredPlayer.class);
             query.select(root).where(builder.equal(root.get("playerName"), name),
-                    builder.equal(root.get("trnName"), trnName));
+            		builder.equal(root.get("trnId"), trnId));
+                    //builder.equal(root.get("trnName"), trnName));
             Query<RegisteredPlayer> q = session.createQuery(query);
             List<RegisteredPlayer> playerNames = q.getResultList();
 
